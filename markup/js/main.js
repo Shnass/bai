@@ -69,6 +69,17 @@ $(function () {
     }
 
 
+    $('.filters_more .call_more').click(function(e){
+        e.preventDefault();
+        $(this).siblings('ul').show()
+    })
+    $('.filters_more ul li').click(function(e){
+        e.preventDefault();
+        $(this).parents('ul').hide().parents('.filters_more').find('.call_more span').text($(this).text())
+    })
+
+
+
     /*** CUSTOM CHECKBOX ***/
     $('.cC').click(function (e) {
         e.preventDefault();
@@ -148,6 +159,38 @@ $(function () {
         $(this).parents('.page_header_search').removeClass('focus')
     })
 
+
+    var cities = [
+        "Каменногорск",
+        "Кикерино",
+        "Кингисепп",
+        "Кириши",
+        "Кировск",
+        "Кобринское",
+        "Колпино",
+        "Коммунар",
+        "Кронштадт",
+        "Вознесенье",
+        "Волосово",
+        "Волхов",
+        "Всеволожск",
+        "Выборг",
+        "Вырица",
+        "Высоцк",
+        "Павловск",
+        "Парголово",
+        "Петродворец",
+        "Пикалёво",
+        "Подпорожье",
+        "Приозерск",
+        "Пушкин"
+        ];
+        $( ".cities_select" ).autocomplete({
+          source: cities
+        });
+
+
+
     /*** DROP MENUS ***/
     $('.page_header_location_actual').click(function (e) {
         e.preventDefault();
@@ -218,6 +261,11 @@ $(function () {
     $('.rate_select li').click(function (e) {
         e.preventDefault();
         $(this).addClass('selected').siblings().removeClass('selected');
+        $(this).find('input').click()
+    })
+
+    $('.rate_select li input').click(function(e){
+        e.stopPropagation()
     })
 
     $('.btn_submiting_slim').click(function (e) {
@@ -235,12 +283,13 @@ $(function () {
 
     /*** PRICE SELECTION  ***/
     $(".sum_selection").each(function () {
+
         $(this).slider({
             range: "min",
-            min: $(this).data('min'),
-            max: $(this).data('max'),
-            value: $(this).data('min'),
-            step: parseInt($(this).data('max')) / 10,
+            min: parseInt($(this).attr('data-min').trim()),
+            max: parseInt($(this).attr('data-max').trim()),
+            value: parseInt($(this).attr('data-min').trim()),
+            step: parseInt($(this).attr('data-max').trim()) / 10,
             slide: function (event, ui) {
                 var $input = $(this).parents('.sum_ammount_select').find('input.autonum');
                 $input.autoNumeric('set', ui.value);

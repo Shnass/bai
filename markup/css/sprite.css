@@ -98,7 +98,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#07b75e', end
 .page_header_location_actual:after { background-position: -26px -819px; width: 9px; height: 17px;right: -20px;position: absolute;top: 5px;}
 .page_header_location_actual:hover:after { background-position: -25px -836px; width: 9px; height: 17px; }
 
-.curselect+.ui-selectmenu-button span.ui-icon{ background-position: -26px -819px; width: 9px; height: 17px;right: 10px;position: absolute;top: 0px;bottom: 0;margin: auto;}
+.curselect+.ui-selectmenu-button span.ui-icon{ background-position: -35px -819px; width: 9px; height: 17px;right: 10px;position: absolute;top: 0px;bottom: 0;margin: auto;}
 .offer_details_list li:before { background: none;height: 15px;
 width: 15px;
 border-radius: 15px;
