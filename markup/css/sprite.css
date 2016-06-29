@@ -4,7 +4,7 @@
 .bx-next,
 .page_header_location_actual:after,
 .ui-slider .ui-slider-handle,
-.curselect+.ui-selectmenu-button span.ui-icon,
+.select_place .ik_select_link_text:after,
 .offer_details_list li:before,
 .simple_cb:before,
 .bank_card_phone .number:before,
@@ -14,7 +14,7 @@
 .benefits_list li:before
 {background:url(../images/sprite.png);background-repeat: no-repeat;display: inline-block;}
 
-
+.select_place .ik_select_link_text:after,
 .acc_h:after,
 .offer_details_list li:before,
 .page_header_location_actual:after,
@@ -48,21 +48,22 @@
 
 
 .icn_navi_1{background-position:0 0;width:32px;height:32px}
-.icn_navi_2{background-position:0 -256px;width:32px;height:32px}
-.icn_navi_3{background-position:0 -64px;width:32px;height:32px}
+.icn_navi_2{background-position:0 -128px;width:32px;height:32px}
+.icn_navi_3{background-position:0 -256px;width:32px;height:32px}
+.icn_navi_4{background-position:0 -384px;width:32px;height:32px}
 .icn_navi_5{background-position:0 -192px;width:32px;height:32px}
-.icn_navi_4{background-position:0 -128px;width:32px;height:32px}
-.icn_navi_8{background-position:0 -448px;width:32px;height:32px}
-.icn_navi_6{background-position:0 -320px;width:32px;height:32px}
-.icn_navi_7{background-position:0 -384px;width:32px;height:32px}
+.icn_navi_6{background-position:0 -64px;width:32px;height:32px}
+.icn_navi_7{background-position:0 -448px;width:32px;height:32px}
+.icn_navi_8{background-position:0 -320px;width:32px;height:32px}
+
 a.active .icn_navi_1{background-position:0 -32px;width:32px;height:32px}
-a.active .icn_navi_3{background-position:0 -96px;width:32px;height:32px}
-a.active .icn_navi_4{background-position:0 -160px;width:32px;height:32px}
+a.active .icn_navi_2{background-position:0 -160px;width:32px;height:32px}
+a.active .icn_navi_3{background-position:0 -288px;width:32px;height:32px}
+a.active .icn_navi_4{background-position:0 -416px;width:32px;height:32px}
 a.active .icn_navi_5{background-position:0 -224px;width:32px;height:32px}
-a.active .icn_navi_2{background-position:0 -288px;width:32px;height:32px}
-a.active .icn_navi_6{background-position:0 -352px;width:32px;height:32px}
-a.active .icn_navi_7{background-position:0 -416px;width:32px;height:32px}
-a.active .icn_navi_8{background-position:0 -480px;width:32px;height:32px}
+a.active .icn_navi_6{background-position:0 -96px;width:32px;height:32px}
+a.active .icn_navi_7{background-position:0 -480px;width:32px;height:32px}
+a.active .icn_navi_8{background-position:0 -352px;width:32px;height:32px}
 
 .icn_key {background-position:0 -288px;width:16px;height:16px;-webkit-background-size: 16px  376px;background-size: 16px 376px;}
 a:hover .icn_key {background-position:0 -272px;}
@@ -98,7 +99,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#07b75e', end
 .page_header_location_actual:after { background-position: -26px -819px; width: 9px; height: 17px;right: -20px;position: absolute;top: 5px;}
 .page_header_location_actual:hover:after { background-position: -25px -836px; width: 9px; height: 17px; }
 
-.curselect+.ui-selectmenu-button span.ui-icon{ background-position: -35px -819px; width: 9px; height: 17px;right: 10px;position: absolute;top: 0px;bottom: 0;margin: auto;}
+.select_place .ik_select_link_text:after{ background-position: -35px -819px; width: 9px; height: 17px;right: 10px;position: absolute;top: 0px;bottom: 0;margin: auto;}
 .offer_details_list li:before { background: none;height: 15px;
 width: 15px;
 border-radius: 15px;
@@ -187,4 +188,3 @@ a:hover .icn_more_solid{background-position: 0 -1975px;}
 
 .benefits_list li:before { background-position: -0px -2144px; width: 25px; height: 27px; left: 0;top: -4px;}
 .icn_calc { background-position: -33px -2119px; width: 13px; height: 16px; position: absolute;left: -18px;top: 1px;}
-

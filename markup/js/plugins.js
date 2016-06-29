@@ -644,3 +644,1057 @@ $(function(){
  */
  
 !function(e){"function"==typeof define&&define.amd?define(["jquery"],e):"object"==typeof module&&module.exports?module.exports=e(require("jquery")):e(window.jQuery)}(function(e){"use strict";function t(e){var t={};if(void 0===e.selectionStart){e.focus();var a=document.selection.createRange();t.length=a.text.length,a.moveStart("character",-e.value.length),t.end=a.text.length,t.start=t.end-t.length}else t.start=e.selectionStart,t.end=e.selectionEnd,t.length=t.end-t.start;return t}function a(e,t,a){if(void 0===e.selectionStart){e.focus();var i=e.createTextRange();i.collapse(!0),i.moveEnd("character",a),i.moveStart("character",t),i.select()}else e.selectionStart=t,e.selectionEnd=a}function i(t,a){e.each(a,function(e,i){"function"==typeof i?a[e]=i(t,a,e):"function"==typeof t.autoNumeric[i]&&(a[e]=t.autoNumeric[i](t,a,e))})}function n(e,t){"string"==typeof e[t]&&(e[t]*=1)}function r(e,t){i(e,t),t.tagList=["b","caption","cite","code","dd","del","div","dfn","dt","em","h1","h2","h3","h4","h5","h6","ins","kdb","label","li","output","p","q","s","sample","span","strong","td","th","u","var"];var a=t.vMax.toString().split("."),r=t.vMin||0===t.vMin?t.vMin.toString().split("."):[];if(n(t,"vMax"),n(t,"vMin"),n(t,"mDec"),t.mDec="CHF"===t.mRound?"2":t.mDec,t.allowLeading=!0,t.aNeg=t.vMin<0?"-":"",a[0]=a[0].replace("-",""),r[0]=r[0].replace("-",""),t.mInt=Math.max(a[0].length,r[0].length,1),null===t.mDec){var o=0,s=0;a[1]&&(o=a[1].length),r[1]&&(s=r[1].length),t.mDec=Math.max(o,s)}null===t.altDec&&t.mDec>0&&("."===t.aDec&&","!==t.aSep?t.altDec=",":","===t.aDec&&"."!==t.aSep&&(t.altDec="."));var u=t.aNeg?"([-\\"+t.aNeg+"]?)":"(-?)";t.aNegRegAutoStrip=u,t.skipFirstAutoStrip=new RegExp(u+"[^-"+(t.aNeg?"\\"+t.aNeg:"")+"\\"+t.aDec+"\\d].*?(\\d|\\"+t.aDec+"\\d)"),t.skipLastAutoStrip=new RegExp("(\\d\\"+t.aDec+"?)[^\\"+t.aDec+"\\d]\\D*$");var l="-"+t.aNum+"\\"+t.aDec;return t.allowedAutoStrip=new RegExp("[^"+l+"]","gi"),t.numRegAutoStrip=new RegExp(u+"(?:\\"+t.aDec+"?(\\d+\\"+t.aDec+"\\d+)|(\\d*(?:\\"+t.aDec+"\\d*)?))"),t}function o(e,t,a){if(t.aSign)for(;e.indexOf(t.aSign)>-1;)e=e.replace(t.aSign,"");e=e.replace(t.skipFirstAutoStrip,"$1$2"),e=e.replace(t.skipLastAutoStrip,"$1"),e=e.replace(t.allowedAutoStrip,""),t.altDec&&(e=e.replace(t.altDec,t.aDec));var i=e.match(t.numRegAutoStrip);if(e=i?[i[1],i[2],i[3]].join(""):"",("allow"===t.lZero||"keep"===t.lZero)&&"strip"!==a){var n=[],r="";n=e.split(t.aDec),-1!==n[0].indexOf("-")&&(r="-",n[0]=n[0].replace("-","")),n[0].length>t.mInt&&"0"===n[0].charAt(0)&&(n[0]=n[0].slice(1)),e=r+n.join(t.aDec)}if(a&&"deny"===t.lZero||a&&"allow"===t.lZero&&t.allowLeading===!1){var o="^"+t.aNegRegAutoStrip+"0*(\\d"+("leading"===a?")":"|$)");o=new RegExp(o),e=e.replace(o,"$1$2")}return e}function s(e,t){if("p"===t.pSign){var a=t.nBracket.split(",");t.hasFocus||t.removeBrackets?(t.hasFocus&&e.charAt(0)===a[0]||t.removeBrackets&&e.charAt(0)===a[0])&&(e=e.replace(a[0],t.aNeg),e=e.replace(a[1],"")):(e=e.replace(t.aNeg,""),e=a[0]+e+a[1])}return e}function u(e,t){if(e){var a=+e;if(1e-6>a&&a>-1)e=+e,1e-6>e&&e>0&&(e=(e+10).toString(),e=e.substring(1)),0>e&&e>-1&&(e=(e-10).toString(),e="-"+e.substring(2)),e=e.toString();else{var i=e.split(".");void 0!==i[1]&&(0===+i[1]?e=i[0]:(i[1]=i[1].replace(/0*$/,""),e=i.join(".")))}}return"keep"===t.lZero?e:e.replace(/^0*(\d)/,"$1")}function l(e,t,a){return t&&"."!==t&&(e=e.replace(t,".")),a&&"-"!==a&&(e=e.replace(a,"-")),e.match(/\d/)||(e+="0"),e}function c(e,t,a){return a&&"-"!==a&&(e=e.replace("-",a)),t&&"."!==t&&(e=e.replace(".",t)),e}function p(e,t,a){return""===e||e===t.aNeg?"zero"===t.wEmpty?e+"0":"sign"===t.wEmpty||a?e+t.aSign:e:null}function h(e,t){e=o(e,t);var a=e.replace(",","."),i=p(e,t,!0);if(null!==i)return i;var n="";n=2===t.dGroup?/(\d)((\d)(\d{2}?)+)$/:4===t.dGroup?/(\d)((\d{4}?)+)$/:/(\d)((\d{3}?)+)$/;var r=e.split(t.aDec);t.altDec&&1===r.length&&(r=e.split(t.altDec));var u=r[0];if(t.aSep)for(;n.test(u);)u=u.replace(n,"$1"+t.aSep+"$2");if(0!==t.mDec&&r.length>1?(r[1].length>t.mDec&&(r[1]=r[1].substring(0,t.mDec)),e=u+t.aDec+r[1]):e=u,t.aSign){var l=-1!==e.indexOf(t.aNeg);e=e.replace(t.aNeg,""),e="p"===t.pSign?t.aSign+e:e+t.aSign,l&&(e=t.aNeg+e)}return 0>a&&null!==t.nBracket&&(e=s(e,t)),e}function d(e,t){e=""===e?"0":e.toString(),n(t,"mDec"),"CHF"===t.mRound&&(e=(Math.round(20*e)/20).toString());var a="",i=0,r="",o="boolean"==typeof t.aPad||null===t.aPad?t.aPad?t.mDec:0:+t.aPad,s=function(e){var t=0===o?/(\.(?:\d*[1-9])?)0*$/:1===o?/(\.\d(?:\d*[1-9])?)0*$/:new RegExp("(\\.\\d{"+o+"}(?:\\d*[1-9])?)0*$");return e=e.replace(t,"$1"),0===o&&(e=e.replace(/\.$/,"")),e};"-"===e.charAt(0)&&(r="-",e=e.replace("-","")),e.match(/^\d/)||(e="0"+e),"-"===r&&0===+e&&(r=""),(+e>0&&"keep"!==t.lZero||e.length>0&&"allow"===t.lZero)&&(e=e.replace(/^0*(\d)/,"$1"));var u=e.lastIndexOf("."),l=-1===u?e.length-1:u,c=e.length-1-l;if(c<=t.mDec){if(a=e,o>c){-1===u&&(a+=t.aDec);for(var p="000000";o>c;)p=p.substring(0,o-c),a+=p,c+=p.length}else c>o?a=s(a):0===c&&0===o&&(a=a.replace(/\.$/,""));if("CHF"!==t.mRound)return 0===+a?a:r+a;"CHF"===t.mRound&&(u=a.lastIndexOf("."),e=a)}var h=u+t.mDec,d=+e.charAt(h+1),g=e.substring(0,h+1).split(""),f="."===e.charAt(h)?e.charAt(h-1)%2:e.charAt(h)%2,m=!0;if(1!==f&&(f=0===f&&e.substring(h+2,e.length)>0?1:0),d>4&&"S"===t.mRound||d>4&&"A"===t.mRound&&""===r||d>5&&"A"===t.mRound&&"-"===r||d>5&&"s"===t.mRound||d>5&&"a"===t.mRound&&""===r||d>4&&"a"===t.mRound&&"-"===r||d>5&&"B"===t.mRound||5===d&&"B"===t.mRound&&1===f||d>0&&"C"===t.mRound&&""===r||d>0&&"F"===t.mRound&&"-"===r||d>0&&"U"===t.mRound||"CHF"===t.mRound)for(i=g.length-1;i>=0;i-=1)if("."!==g[i]){if("CHF"===t.mRound&&g[i]<=2&&m){g[i]=0,m=!1;break}if("CHF"===t.mRound&&g[i]<=7&&m){g[i]=5,m=!1;break}if("CHF"===t.mRound&&m?(g[i]=10,m=!1):g[i]=+g[i]+1,g[i]<10)break;i>0&&(g[i]="0")}return g=g.slice(0,h+1),a=s(g.join("")),0===+a?a:r+a}function g(e,t,a){var i=t.aDec,n=t.mDec;if(e="paste"===a?d(e,t):e,i&&n){var r=e.split(i);r[1]&&r[1].length>n&&(n>0?(r[1]=r[1].substring(0,n),e=r.join(i)):e=r[0])}return e}function f(e,t){e=o(e,t),e=g(e,t),e=l(e,t.aDec,t.aNeg);var a=+e;return a>=t.vMin&&a<=t.vMax}function m(t,a){this.settings=a,this.that=t,this.$that=e(t),this.formatted=!1,this.settingsClone=r(this.$that,this.settings),this.value=t.value}function v(t){return"string"==typeof t&&(t=t.replace(/\[/g,"\\[").replace(/\]/g,"\\]"),t="#"+t.replace(/(:|\.)/g,"\\$1")),e(t)}function y(e,t,a){var i=e.data("autoNumeric");i||(i={},e.data("autoNumeric",i));var n=i.holder;return(void 0===n&&t||a)&&(n=new m(e.get(0),t),i.holder=n),n}m.prototype={init:function(e){this.value=this.that.value,this.settingsClone=r(this.$that,this.settings),this.ctrlKey=e.ctrlKey,this.cmdKey=e.metaKey,this.shiftKey=e.shiftKey,this.selection=t(this.that),("keydown"===e.type||"keyup"===e.type)&&(this.kdCode=e.keyCode),this.which=e.which,this.processed=!1,this.formatted=!1},setSelection:function(e,t,i){e=Math.max(e,0),t=Math.min(t,this.that.value.length),this.selection={start:e,end:t,length:t-e},(void 0===i||i)&&a(this.that,e,t)},setPosition:function(e,t){this.setSelection(e,e,t)},getBeforeAfter:function(){var e=this.value,t=e.substring(0,this.selection.start),a=e.substring(this.selection.end,e.length);return[t,a]},getBeforeAfterStriped:function(){var e=this.getBeforeAfter();return e[0]=o(e[0],this.settingsClone),e[1]=o(e[1],this.settingsClone),e},normalizeParts:function(e,t){var a=this.settingsClone;t=o(t,a);var i=t.match(/^\d/)?!0:"leading";e=o(e,a,i),""!==e&&e!==a.aNeg||"deny"!==a.lZero||t>""&&(t=t.replace(/^0*(\d)/,"$1"));var n=e+t;if(a.aDec){var r=n.match(new RegExp("^"+a.aNegRegAutoStrip+"\\"+a.aDec));r&&(e=e.replace(r[1],r[1]+"0"),n=e+t)}return"zero"!==a.wEmpty||n!==a.aNeg&&""!==n||(e+="0"),[e,t]},setValueParts:function(e,t,a){var i=this.settingsClone,n=this.normalizeParts(e,t),r=n.join(""),o=n[0].length;return f(r,i)?(r=g(r,i,a),o>r.length&&(o=r.length),this.value=r,this.setPosition(o,!1),!0):!1},signPosition:function(){var e=this.settingsClone,t=e.aSign,a=this.that;if(t){var i=t.length;if("p"===e.pSign){var n=e.aNeg&&a.value&&a.value.charAt(0)===e.aNeg;return n?[1,i+1]:[0,i]}var r=a.value.length;return[r-i,r]}return[1e3,-1]},expandSelectionOnSign:function(e){var t=this.signPosition(),a=this.selection;a.start<t[1]&&a.end>t[0]&&((a.start<t[0]||a.end>t[1])&&this.value.substring(Math.max(a.start,t[0]),Math.min(a.end,t[1])).match(/^\s*$/)?a.start<t[0]?this.setSelection(a.start,t[0],e):this.setSelection(t[1],a.end,e):this.setSelection(Math.min(a.start,t[0]),Math.max(a.end,t[1]),e))},checkPaste:function(){if(void 0!==this.valuePartsBeforePaste){var e=this.getBeforeAfter(),t=this.valuePartsBeforePaste;delete this.valuePartsBeforePaste,e[0]=e[0].substr(0,t[0].length)+o(e[0].substr(t[0].length),this.settingsClone),this.setValueParts(e[0],e[1],"paste")||(this.value=t.join(""),this.setPosition(t[0].length,!1))}},skipAllways:function(e){var t=this.kdCode,a=this.which,i=this.ctrlKey,n=this.cmdKey,r=this.shiftKey;if((i||n)&&"keyup"===e.type&&void 0!==this.valuePartsBeforePaste||r&&45===t)return this.checkPaste(),!1;if(t>=112&&123>=t||t>=91&&93>=t||t>=9&&31>=t||8>t&&(0===a||a===t)||144===t||145===t||45===t||224===t)return!0;if((i||n)&&65===t)return!0;if((i||n)&&(67===t||86===t||88===t))return"keydown"===e.type&&this.expandSelectionOnSign(),(86===t||45===t)&&("keydown"===e.type||"keypress"===e.type?void 0===this.valuePartsBeforePaste&&(this.valuePartsBeforePaste=this.getBeforeAfter()):this.checkPaste()),"keydown"===e.type||"keypress"===e.type||67===t;if(i||n)return!0;if(37===t||39===t){var o=this.settingsClone.aSep,s=this.selection.start,u=this.that.value;return"keydown"===e.type&&o&&!this.shiftKey&&(37===t&&u.charAt(s-2)===o?this.setPosition(s-1):39===t&&u.charAt(s+1)===o&&this.setPosition(s+1)),!0}return t>=34&&40>=t?!0:!1},processAllways:function(){var e;return 8===this.kdCode||46===this.kdCode?(this.selection.length?(this.expandSelectionOnSign(!1),e=this.getBeforeAfterStriped(),this.setValueParts(e[0],e[1])):(e=this.getBeforeAfterStriped(),8===this.kdCode?e[0]=e[0].substring(0,e[0].length-1):e[1]=e[1].substring(1,e[1].length),this.setValueParts(e[0],e[1])),!0):!1},processKeypress:function(){var e=this.settingsClone,t=String.fromCharCode(this.which),a=this.getBeforeAfterStriped(),i=a[0],n=a[1];return t===e.aDec||e.altDec&&t===e.altDec||("."===t||","===t)&&110===this.kdCode?e.mDec&&e.aDec?e.aNeg&&n.indexOf(e.aNeg)>-1?!0:i.indexOf(e.aDec)>-1?!0:n.indexOf(e.aDec)>0?!0:(0===n.indexOf(e.aDec)&&(n=n.substr(1)),this.setValueParts(i+e.aDec,n),!0):!0:"-"===t||"+"===t?e.aNeg?(""===i&&n.indexOf(e.aNeg)>-1&&(i=e.aNeg,n=n.substring(1,n.length)),i=i.charAt(0)===e.aNeg?i.substring(1,i.length):"-"===t?e.aNeg+i:i,this.setValueParts(i,n),!0):!0:t>="0"&&"9">=t?(e.aNeg&&""===i&&n.indexOf(e.aNeg)>-1&&(i=e.aNeg,n=n.substring(1,n.length)),e.vMax<=0&&e.vMin<e.vMax&&-1===this.value.indexOf(e.aNeg)&&"0"!==t&&(i=e.aNeg+i),this.setValueParts(i+t,n),!0):!0},formatQuick:function(){var e=this.settingsClone,t=this.getBeforeAfterStriped(),a=this.value;if((""===e.aSep||""!==e.aSep&&-1===a.indexOf(e.aSep))&&(""===e.aSign||""!==e.aSign&&-1===a.indexOf(e.aSign))){var i=[],n="";i=a.split(e.aDec),i[0].indexOf("-")>-1&&(n="-",i[0]=i[0].replace("-",""),t[0]=t[0].replace("-","")),i[0].length>e.mInt&&"0"===t[0].charAt(0)&&(t[0]=t[0].slice(1)),t[0]=n+t[0]}var r=h(this.value,this.settingsClone),o=r.length;if(r){var s=t[0].split(""),u=0;for(u;u<s.length;u+=1)s[u].match("\\d")||(s[u]="\\"+s[u]);var l=new RegExp("^.*?"+s.join(".*?")),c=r.match(l);c?(o=c[0].length,(0===o&&r.charAt(0)!==e.aNeg||1===o&&r.charAt(0)===e.aNeg)&&e.aSign&&"p"===e.pSign&&(o=this.settingsClone.aSign.length+("-"===r.charAt(0)?1:0))):e.aSign&&"s"===e.pSign&&(o-=e.aSign.length)}this.that.value=r,this.setPosition(o),this.formatted=!0}};var S={init:function(t){return this.each(function(){var i=e(this),n=i.data("autoNumeric"),r=i.data(),u=i.is("input[type=text], input[type=hidden], input[type=tel], input:not([type])");if("object"==typeof n)return this;n=e.extend({},e.fn.autoNumeric.defaults,r,t,{aNum:"0123456789",hasFocus:!1,removeBrackets:!1,runOnce:!1,tagList:["b","caption","cite","code","dd","del","div","dfn","dt","em","h1","h2","h3","h4","h5","h6","ins","kdb","label","li","output","p","q","s","sample","span","strong","td","th","u","var"]}),n.aDec===n.aSep&&e.error("autoNumeric will not function properly when the decimal character aDec: '"+n.aDec+"' and thousand separator aSep: '"+n.aSep+"' are the same character"),i.data("autoNumeric",n);var g=y(i,n);if(u||"input"!==i.prop("tagName").toLowerCase()||e.error('The input type "'+i.prop("type")+'" is not supported by autoNumeric()'),-1===e.inArray(i.prop("tagName").toLowerCase(),n.tagList)&&"input"!==i.prop("tagName").toLowerCase()&&e.error("The <"+i.prop("tagName").toLowerCase()+"> is not supported by autoNumeric()"),n.runOnce===!1&&n.aForm){if(u){var m=!0;""===i[0].value&&"empty"===n.wEmpty&&(i[0].value="",m=!1),""===i[0].value&&"sign"===n.wEmpty&&(i[0].value=n.aSign,m=!1),m&&""!==i.val()&&(null===n.anDefault&&i[0].value===i.prop("defaultValue")||null!==n.anDefault&&n.anDefault.toString()===i.val())&&i.autoNumeric("set",i.val())}-1!==e.inArray(i.prop("tagName").toLowerCase(),n.tagList)&&""!==i.text()&&i.autoNumeric("set",i.text())}n.runOnce=!0,i.is("input[type=text], input[type=hidden], input[type=tel], input:not([type])")&&(i.on("keydown.autoNumeric",function(t){return g=y(i),g.settings.aDec===g.settings.aSep&&e.error("autoNumeric will not function properly when the decimal character aDec: '"+g.settings.aDec+"' and thousand separator aSep: '"+g.settings.aSep+"' are the same character"),g.that.readOnly?(g.processed=!0,!0):(g.init(t),g.skipAllways(t)?(g.processed=!0,!0):g.processAllways()?(g.processed=!0,g.formatQuick(),t.preventDefault(),!1):(g.formatted=!1,!0))}),i.on("keypress.autoNumeric",function(e){g=y(i);var t=g.processed;return g.init(e),g.skipAllways(e)?!0:t?(e.preventDefault(),!1):g.processAllways()||g.processKeypress()?(g.formatQuick(),e.preventDefault(),!1):void(g.formatted=!1)}),i.on("keyup.autoNumeric",function(e){g=y(i),g.init(e);var t=g.skipAllways(e);return g.kdCode=0,delete g.valuePartsBeforePaste,i[0].value===g.settings.aSign&&("s"===g.settings.pSign?a(this,0,0):a(this,g.settings.aSign.length,g.settings.aSign.length)),t?!0:""===this.value?!0:void(g.formatted||g.formatQuick())}),i.on("focusin.autoNumeric",function(){g=y(i);var e=g.settingsClone;if(e.hasFocus=!0,null!==e.nBracket){var t=i.val();i.val(s(t,e))}g.inVal=i.val();var a=p(g.inVal,e,!0);null!==a&&""!==a&&i.val(a)}),i.on("focusout.autoNumeric",function(){g=y(i);var e=g.settingsClone,t=i.val(),a=t;e.hasFocus=!1;var n="";"allow"===e.lZero&&(e.allowLeading=!1,n="leading"),""!==t&&(t=o(t,e,n),null===p(t,e)&&f(t,e,i[0])?(t=l(t,e.aDec,e.aNeg),t=d(t,e),t=c(t,e.aDec,e.aNeg)):t="");var r=p(t,e,!1);null===r&&(r=h(t,e)),(r!==g.inVal||r!==a)&&(i.val(r),i.change(),delete g.inVal)}))})},destroy:function(){return e(this).each(function(){var t=e(this);t.off(".autoNumeric"),t.removeData("autoNumeric")})},update:function(t){return e(this).each(function(){var a=v(e(this)),i=a.data("autoNumeric");"object"!=typeof i&&e.error("You must initialize autoNumeric('init', {options}) prior to calling the 'update' method");var n=a.autoNumeric("get");return i=e.extend(i,t),y(a,i,!0),i.aDec===i.aSep&&e.error("autoNumeric will not function properly when the decimal character aDec: '"+i.aDec+"' and thousand separator aSep: '"+i.aSep+"' are the same character"),a.data("autoNumeric",i),""!==a.val()||""!==a.text()?a.autoNumeric("set",n):void 0})},set:function(t){return null!==t?e(this).each(function(){var a=v(e(this)),i=a.data("autoNumeric"),n=t.toString(),r=t.toString(),o=a.is("input[type=text], input[type=hidden], input[type=tel], input:not([type])");return"object"!=typeof i&&e.error("You must initialize autoNumeric('init', {options}) prior to calling the 'set' method"),r!==a.attr("value")&&r!==a.text()||i.runOnce!==!1||(n=n.replace(",",".")),e.isNumeric(+n)||e.error("The value ("+n+") being 'set' is not numeric and has caused a error to be thrown"),n=u(n,i),i.setEvent=!0,n.toString(),""!==n&&(n=d(n,i)),n=c(n,i.aDec,i.aNeg),f(n,i)||(n=d("",i)),n=h(n,i),o?a.val(n):-1!==e.inArray(a.prop("tagName").toLowerCase(),i.tagList)?a.text(n):!1}):void 0},get:function(){var t=v(e(this)),a=t.data("autoNumeric");"object"!=typeof a&&e.error("You must initialize autoNumeric('init', {options}) prior to calling the 'get' method");var i="";return t.is("input[type=text], input[type=hidden], input[type=tel], input:not([type])")?i=t.eq(0).val():-1!==e.inArray(t.prop("tagName").toLowerCase(),a.tagList)?i=t.eq(0).text():e.error("The <"+t.prop("tagName").toLowerCase()+"> is not supported by autoNumeric()"),""===i&&"empty"===a.wEmpty||i===a.aSign&&("sign"===a.wEmpty||"empty"===a.wEmpty)?"":(""!==i&&null!==a.nBracket&&(a.removeBrackets=!0,i=s(i,a),a.removeBrackets=!1),(a.runOnce||a.aForm===!1)&&(i=o(i,a)),i=l(i,a.aDec,a.aNeg),0===+i&&"keep"!==a.lZero&&(i="0"),"keep"===a.lZero?i:i=u(i,a))},getString:function(){var t=!1,a=v(e(this)),i=a.serialize(),n=i.split("&"),r=e("form").index(a),o=e("form:eq("+r+")"),s=[],u=[],l=/^(?:submit|button|image|reset|file)$/i,c=/^(?:input|select|textarea|keygen)/i,p=/^(?:checkbox|radio)$/i,h=/^(?:button|checkbox|color|date|datetime|datetime-local|email|file|image|month|number|password|radio|range|reset|search|submit|time|url|week)/i,d=0;return e.each(o[0],function(e,t){""===t.name||!c.test(t.localName)||l.test(t.type)||t.disabled||!t.checked&&p.test(t.type)?u.push(-1):(u.push(d),d+=1)}),d=0,e.each(o[0],function(e,t){"input"!==t.localName||""!==t.type&&"text"!==t.type&&"hidden"!==t.type&&"tel"!==t.type?(s.push(-1),"input"===t.localName&&h.test(t.type)&&(d+=1)):(s.push(d),d+=1)}),e.each(n,function(a,i){i=n[a].split("=");var o=e.inArray(a,u);if(o>-1&&s[o]>-1){var l=e("form:eq("+r+") input:eq("+s[o]+")"),c=l.data("autoNumeric");"object"==typeof c&&null!==i[1]&&(i[1]=e("form:eq("+r+") input:eq("+s[o]+")").autoNumeric("get").toString(),n[a]=i.join("="),t=!0)}}),t||e.error("You must initialize autoNumeric('init', {options}) prior to calling the 'getString' method"),n.join("&")},getArray:function(){var t=!1,a=v(e(this)),i=a.serializeArray(),n=e("form").index(a),r=e("form:eq("+n+")"),o=[],s=[],u=/^(?:submit|button|image|reset|file)$/i,l=/^(?:input|select|textarea|keygen)/i,c=/^(?:checkbox|radio)$/i,p=/^(?:button|checkbox|color|date|datetime|datetime-local|email|file|image|month|number|password|radio|range|reset|search|submit|time|url|week)/i,h=0;return e.each(r[0],function(e,t){""===t.name||!l.test(t.localName)||u.test(t.type)||t.disabled||!t.checked&&c.test(t.type)?s.push(-1):(s.push(h),h+=1)}),h=0,e.each(r[0],function(e,t){"input"!==t.localName||""!==t.type&&"text"!==t.type&&"hidden"!==t.type&&"tel"!==t.type?(o.push(-1),"input"===t.localName&&p.test(t.type)&&(h+=1)):(o.push(h),h+=1)}),e.each(i,function(a,i){var r=e.inArray(a,s);if(r>-1&&o[r]>-1){var u=e("form:eq("+n+") input:eq("+o[r]+")"),l=u.data("autoNumeric");"object"==typeof l&&(i.value=e("form:eq("+n+") input:eq("+o[r]+")").autoNumeric("get").toString(),t=!0)}}),t||e.error("None of the successful form inputs are initialized by autoNumeric."),i},getSettings:function(){var t=v(e(this));return t.eq(0).data("autoNumeric")}};e.fn.autoNumeric=function(t){return S[t]?S[t].apply(this,Array.prototype.slice.call(arguments,1)):"object"!=typeof t&&t?void e.error('Method "'+t+'" is not supported by autoNumeric()'):S.init.apply(this,arguments)},e.fn.autoNumeric.defaults={aSep:",",dGroup:"3",aDec:".",altDec:null,aSign:"",pSign:"p",vMax:"9999999999999.99",vMin:"-9999999999999.99",mDec:null,mRound:"S",aPad:!0,nBracket:null,wEmpty:"empty",lZero:"allow",sNumber:!0,aForm:!0,anDefault:null}});
+
+
+/*! ikSelect 1.1.0
+    Copyright (c) 2013 Igor Kozlov
+    http://igorkozlov.me */
+
+;(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery'], factory);
+    } else {
+        factory(jQuery);
+    }
+}(function ($) {
+    var $window = $(window);
+    var defaults = {
+        syntax: '<div class="ik_select_link"><div class="ik_select_link_text"></div></div><div class="ik_select_dropdown"><div class="ik_select_list"></div></div>',
+        autoWidth: true, // set select width according to the longest option
+        ddFullWidth: true, // set dropdown width according to the longest option
+        equalWidths: true, // include scrollbar width in fake select calculations
+        dynamicWidth: false, // change fake select's width according to it's contents
+        extractLink: false,
+        customClass: '',
+        linkCustomClass: '',
+        ddCustomClass: '',
+        ddMaxHeight: 200,
+        extraWidth: 0,
+        filter: false,
+        nothingFoundText: 'Nothing found',
+        isDisabled: false,
+        onInit: function() {},
+        onShow: function () {},
+        onHide: function () {},
+        onKeyUp: function () {},
+        onKeyDown: function () {},
+        onHoverMove: function () {}
+    };
+
+    var instOpened; // instance of the currently opened select
+
+    // browser detection part was taken from jQuery migrate
+    // https://github.com/jquery/jquery-migrate/blob/e6bda6a84c294eb1319fceb48c09f51042c80892/src/core.js
+    var uaMatch = function (ua) {
+        ua = ua.toLowerCase();
+
+        var match = /(chrome)[ \/]([\w.]+)/.exec(ua) ||
+            /(webkit)[ \/]([\w.]+)/.exec(ua) ||
+            /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
+            /(msie) ([\w.]+)/.exec(ua) ||
+            ua.indexOf('compatible') < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
+            [];
+
+        return {
+            browser: match[1] || '',
+            version: match[2] || '0'
+        };
+    };
+
+    if (! $.browser) {
+        var matched = uaMatch(navigator.userAgent);
+        var browser = {};
+
+        if (matched.browser) {
+            browser[matched.browser] = true;
+            browser.version = matched.version;
+        }
+
+        if (browser.chrome) {
+            browser.webkit = true;
+        } else if (browser.webkit) {
+            browser.safari = true;
+        }
+
+        $.browser = browser;
+    }
+
+    $.browser.mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile/i.test(navigator.userAgent);
+    $.browser.operamini = Object.prototype.toString.call(window.operamini) === '[object OperaMini]';
+
+    function IkSelect(element, options) {
+        var dataOptions = {}; // parsed data- attributes
+
+        this.el = element;
+        this.$el = $(element); // original select
+
+        for (var key in defaults) {
+            dataOptions[key] = this.$el.data(key.toLowerCase());
+        }
+
+        this.options = $.extend({}, defaults, options, dataOptions);
+
+        if ($.browser.mobile) {
+            this.options.filter = false;
+        }
+
+        this.init();
+    }
+
+    $.extend(IkSelect.prototype, {
+        init: function () {
+            this.$wrapper = $('<div class="ik_select">' + this.options.syntax + '</div>'); // wrapper for the fake select and the fake dropdown
+            this.$link = $('.ik_select_link', this.$wrapper); // fake select
+            this.$linkText = $('.ik_select_link_text', this.$wrapper); // fake select's text
+            this.$dropdown = $('.ik_select_dropdown', this.$wrapper); // fake dropdown
+            this.$list = $('.ik_select_list', this.$wrapper); // options list inside the fake dropdown
+            this.$listInner = $('<div class="ik_select_list_inner"/>'); // support dropdown for scrolling
+            this.$active = $([]); // active fake option
+            this.$hover = $([]); // hovered fake option
+            this.hoverIndex = 0; // hovered fake option's index
+
+            this.$optionSet = $([]);
+            this.$optgroupSet = $([]);
+
+            this.$list.append(this.$listInner);
+
+            if (this.options.filter) {
+                this.$filter = $([]); // filter text input
+                this.$optionSetOriginal = $([]); // contains original list items when filtering
+                this.$nothingFoundText = $('<div class="ik_select_nothing_found"/>').html(this.options.nothingFoundText);
+                this.$filterWrap = $('.ik_select_filter_wrap', this.$wrapper);
+
+                if (! this.$filterWrap.length) {
+                    this.$filterWrap = $('<div class="ik_select_filter_wrap"/>');
+                }
+
+                this.$filter = $('<input type="text" class="ik_select_filter">');
+
+                this.$filterWrap.append(this.$filter);
+                this.$list.prepend(this.$filterWrap);
+
+                this.$filter.on({
+                    // keyboard controls should work even if the filter is in focus
+                    'keydown.ikSelect keyup.ikSelect': $.proxy(this, '_elKeyUpDown'),
+                    // actual filtering happens on keyup
+                    'keyup.ikSelect': $.proxy(this, '_filterKeyup')
+                });
+            }
+
+            this.$wrapper.addClass(this.options.customClass);
+            this.$link.addClass(this.options.linkCustomClass || (this.options.customClass && this.options.customClass + '-link'));
+            this.$dropdown.addClass(this.options.ddCustomClass || (this.options.customClass && this.options.customClass + '-dd'));
+
+            // creating fake option list
+            this.reset();
+
+            // disable select if an option or attribute are truthy
+            this.toggle(!(this.options.isDisabled || this.$el.prop('disabled')));
+
+            // click event for fake select
+            this.$link.on('click.ikSelect', $.proxy(this, '_linkClick'));
+
+            this.$el.on({
+                // when focus is on the original select add a focus class to the fake one
+                'focus.ikSelect': $.proxy(this, '_elFocus'),
+                // when focus lost remove the focus class from the fake one
+                'blur.ikSelect': $.proxy(this, '_elBlur'),
+                // make sure that the fake select shows correct data
+                'change.ikSelect': $.proxy(this, '_syncOriginalOption'),
+                // keyboard controls for the fake select
+                'keydown.ikSelect keyup.ikSelect': $.proxy(this, '_elKeyUpDown')
+            });
+
+            this.$list.on({
+                'click.ikSelect': $.proxy(this, '_optionClick'),
+                'mouseover.ikSelect': $.proxy(this, '_optionMouseover')
+            }, '.ik_select_option');
+
+            // stop propagation of click events on the wrapper
+            this.$wrapper.on('click', function () {
+                return false;
+            });
+
+            // appending the fake select right after the original one
+            this.$el.after(this.$wrapper);
+
+            // set correct dimensions
+            this.redraw();
+
+            // move original select inside the wrapper
+            this.$el.appendTo(this.$wrapper);
+
+            this.options.onInit(this);
+            this.$el.trigger('ikinit', this);
+        },
+
+        // click listener for fake select
+        _linkClick: function () {
+            if (this.isDisabled) {
+                return;
+            }
+            if (this === instOpened) {
+                this.hideDropdown();
+            } else {
+                this.showDropdown();
+            }
+        },
+
+        // click listener for the fake options
+        _optionClick: function () {
+            this._makeOptionActive(this.searchIndexes ? this.$optionSetOriginal.index(this.$hover) : this.hoverIndex, true);
+            this.hideDropdown();
+            this.$el.change().focus();
+        },
+
+        // hover listener for the fake options
+        _optionMouseover: function (event) {
+            var $option = $(event.currentTarget);
+            if ($option.hasClass('ik_select_option_disabled')) {
+                return;
+            }
+            this.$hover.removeClass('ik_select_hover');
+            this.$hover = $option.addClass('ik_select_hover');
+            this.hoverIndex = this.$optionSet.index(this.$hover);
+        },
+
+        // makes fake option active without syncing the original select
+        _makeOptionActive: function (index, shouldSync) {
+            var $option = $(this.el.options[index]);
+            this.$linkText.text($option.text());
+
+            this.$link.toggleClass('ik_select_link_novalue', !$option.attr('value'));
+
+            this.$hover.removeClass('ik_select_hover');
+            this.$active.removeClass('ik_select_active');
+            this.$hover = this.$active = this.$optionSet.eq(index).addClass('ik_select_hover ik_select_active');
+            this.hoverIndex = index;
+
+            if (shouldSync) {
+                this._syncFakeOption();
+            }
+        },
+
+        // keyboard controls for the fake select
+        _elKeyUpDown: function (event) {
+            var $handle = $(event.currentTarget);
+            var type = event.type;
+            var keycode = event.which;
+            var newTop;
+
+            switch (keycode) {
+            case 38: // up
+                if (type === 'keydown') {
+                    event.preventDefault();
+                    this._moveToPrevActive();
+                }
+                break;
+            case 40: // down
+                if (type === 'keydown') {
+                    event.preventDefault();
+                    this._moveToNextActive();
+                }
+                break;
+            case 33: // page up
+                if (type === 'keydown') {
+                    event.preventDefault();
+                    newTop = this.$hover.position().top - this.$listInner.height();
+                    this._moveToPrevActive(function (optionTop) {
+                        return optionTop <= newTop;
+                    });
+                }
+                break;
+            case 34: // page down
+                if (type === 'keydown') {
+                    event.preventDefault();
+                    newTop = this.$hover.position().top + this.$listInner.height();
+                    this._moveToNextActive(function (optionTop) {
+                        return optionTop >= newTop;
+                    });
+                }
+                break;
+            case 36: // home
+                if (type === 'keydown' && $handle.is(this.$el)) {
+                    event.preventDefault();
+                    this._moveToFirstActive();
+                }
+                break;
+            case 35: // end
+                if (type === 'keydown' && $handle.is(this.$el)) {
+                    event.preventDefault();
+                    this._moveToLastActive();
+                }
+                break;
+            case 32: // space
+                if (type === 'keydown' && $handle.is(this.$el)) {
+                    event.preventDefault();
+                    if (! this.$dropdown.is(':visible')) {
+                        this._linkClick();
+                    } else {
+                        this.$hover.click();
+                    }
+                }
+                break;
+            case 13: // enter
+                if (type === 'keydown' && this.$dropdown.is(':visible')) {
+                    event.preventDefault();
+                    this.$hover.click();
+                }
+                break;
+            case 27: // esc
+                if (type === 'keydown' && this.$dropdown.is(':visible')) {
+                    event.preventDefault();
+                    this.hideDropdown();
+                }
+                break;
+            case 9: // tab
+                if (type === 'keydown') {
+                    if ($.browser.webkit && this.$dropdown.is(':visible')) {
+                        event.preventDefault();
+                    } else {
+                        this.hideDropdown();
+                    }
+                }
+                break;
+            default:
+                if (type === 'keyup' && $handle.is(this.$el)) {
+                    this._syncOriginalOption();
+                }
+                break;
+            }
+
+            // mozilla ignores preventDefault for select navigation
+            // this ensures that original select is in sync
+            if (type === 'keyup' && $.browser.mozilla) {
+                this._syncFakeOption();
+            }
+
+            if (type === 'keydown') {
+                this.options.onKeyDown(this, keycode);
+                this.$el.trigger('ikkeydown', [this, keycode]);
+            }
+            if (type === 'keyup') {
+                this.options.onKeyUp(this, keycode);
+                this.$el.trigger('ikkeyup', [this, keycode]);
+            }
+        },
+
+        // controls hover/active states for options and makes selected with keyboard options fully visible
+        _moveTo: function (index) {
+            var optionTopLine, optionBottomLine;
+            var $optgroup;
+
+            if (!this.$dropdown.is(':visible') && $.browser.webkit) {
+                this.showDropdown();
+                return this;
+            }
+
+            if (!this.$dropdown.is(':visible') || $.browser.mozilla) {
+                this._makeOptionActive(index, true);
+            } else {
+                this.$hover.removeClass('ik_select_hover');
+                this.$hover = this.$optionSet.eq(index).addClass('ik_select_hover');
+                this.hoverIndex = index;
+            }
+
+            // make option fully visible
+            optionTopLine = this.$hover.position().top;
+            optionBottomLine = optionTopLine + this.$active.outerHeight();
+            // make optgroup label visible if first option witin this optgroup is hovered
+            if (!this.$hover.index()) {
+                $optgroup = this.$hover.closest('.ik_select_optgroup');
+                if ($optgroup.length) {
+                    optionTopLine = $optgroup.position().top;
+                }
+            }
+            if (optionBottomLine > this.$listInner.height()) {
+                this.$listInner.scrollTop(this.$listInner.scrollTop() + optionBottomLine - this.$listInner.height());
+            } else if (optionTopLine < 0) {
+                this.$listInner.scrollTop(this.$listInner.scrollTop() + optionTopLine);
+            }
+
+            this.options.onHoverMove(this);
+            this.$el.trigger('ikhovermove', this);
+        },
+
+        _moveToFirstActive: function () {
+            for (var i = 0; i < this.$optionSet.length; i++) {
+                if (!this.$optionSet.eq(i).hasClass('ik_select_option_disabled')) {
+                    this._moveTo(i);
+                    break;
+                }
+            }
+        },
+
+        _moveToLastActive: function () {
+            for (var i = this.$optionSet.length - 1; i >= 0; i++) {
+                if (!this.$optionSet.eq(i).hasClass('ik_select_option_disabled')) {
+                    this._moveTo(i);
+                    break;
+                }
+            }
+        },
+
+        _moveToPrevActive: function (condition) {
+            var $option;
+            for (var i = this.hoverIndex - 1; i >= 0; i--) {
+                $option = this.$optionSet.eq(i);
+                if (!$option.hasClass('ik_select_option_disabled') && (typeof condition === 'undefined' || condition($option.position().top))) {
+                    this._moveTo(i);
+                    break;
+                }
+            }
+        },
+
+        _moveToNextActive: function (condition) {
+            var $option;
+            for (var i = this.hoverIndex + 1; i < this.$optionSet.length; i++) {
+                $option = this.$optionSet.eq(i);
+                if (!$option.hasClass('ik_select_option_disabled') && (typeof condition === 'undefined' || condition($option.position().top))) {
+                    this._moveTo(i);
+                    break;
+                }
+            }
+        },
+
+        // when focus is on the original select add a focus class to the fake one
+        _elFocus:  function () {
+            var wrapperOffsetTop, wrapperHeight, windowScrollTop, windowHeight;
+            if (this.isDisabled) {
+                return this;
+            }
+            this.$link.addClass('ik_select_link_focus');
+
+            // scroll the window so that focused select is visible
+            wrapperOffsetTop = this.$wrapper.offset().top;
+            wrapperHeight = this.$wrapper.height();
+            windowScrollTop = $window.scrollTop();
+            windowHeight = $window.height();
+            if ((wrapperOffsetTop + wrapperHeight > windowScrollTop + windowHeight) ||
+                (wrapperOffsetTop < windowScrollTop)) {
+                $window.scrollTop(wrapperOffsetTop - windowHeight / 2);
+            }
+        },
+
+        // when focus lost remove the focus class from the fake one
+        _elBlur: function () {
+            this.$link.removeClass('ik_select_link_focus');
+        },
+
+        // filtering on key up
+        _filterKeyup: function () {
+            var filterVal = $.trim(this.$filter.val());
+            var filterValOld;
+            this.$listInner.show();
+
+            if (typeof this.searchIndexes === 'undefined') {
+                this.$optionSetOriginal = this.$optionSet;
+                this.searchIndexes = $.makeArray(this.$optionSet.map(function (optionIndex, option) {
+                    return $(option).text().toLowerCase();
+                }));
+            }
+
+            if (filterVal !== filterValOld) {
+                if (filterVal === '') {
+                    this.$optionSet = this.$optionSetOriginal.show();
+                    this.$optgroupSet.show();
+                    this.$nothingFoundText.remove();
+                } else {
+                    this.$optionSet = $([]);
+                    this.$optgroupSet.show();
+                    this.$optionSetOriginal.each($.proxy(function (optionIndex, option) {
+                        var $option = $(option);
+                        if (this.searchIndexes[optionIndex].indexOf(filterVal.toLowerCase()) >= 0) {
+                            this.$optionSet = this.$optionSet.add($option);
+                            $option.show();
+                        } else {
+                            $option.hide();
+                        }
+                    }, this));
+
+                    if (this.$optionSet.length) {
+                        this.$nothingFoundText.remove();
+                        this.$optgroupSet.each(function (optgroupIndex, optgroup) {
+                            var $optgroup = $(optgroup);
+                            if (!$('.ik_select_option:visible', $optgroup).length) {
+                                $optgroup.hide();
+                            }
+                        });
+
+                        if (!this.$hover.is(':visible')) {
+                            this._moveToFirstActive();
+                        }
+                    } else {
+                        this.$listInner.hide();
+                        this.$list.append(this.$nothingFoundText);
+                    }
+                }
+
+                filterValOld = filterVal;
+            }
+        },
+
+        // sync selected option in the fake select with the original one
+        _syncFakeOption: function () {
+            this.el.selectedIndex = this.hoverIndex;
+        },
+
+        // sync selected option in the original select with the fake one
+        _syncOriginalOption: function () {
+            this._makeOptionActive(this.el.selectedIndex);
+        },
+
+        // sets fixed height to dropdown if it's bigger than ddMaxHeight
+        _fixHeight: function () {
+            this.$dropdown.show();
+            this.$listInner.css('height', 'auto');
+            if (this.$listInner.height() > this.options.ddMaxHeight) {
+                this.$listInner.css({
+                    overflow: 'auto',
+                    height: this.options.ddMaxHeight,
+                    position: 'relative'
+                });
+            }
+            this.$dropdown.hide();
+        },
+
+        // calculates the needed data for showing the dropdown
+        redraw: function () {
+            var maxWidthOuter, scrollbarWidth, wrapperParentWidth;
+
+            if (this.options.filter) {
+                this.$filter.hide();
+            }
+
+            this.$wrapper.css({
+                position: 'relative'
+            });
+            this.$dropdown.css({
+                position: 'absolute',
+                zIndex: 9998,
+                width: '100%'
+            });
+            this.$list.css({
+                position: 'relative'
+            });
+
+            this._fixHeight();
+
+            // width calculations for the fake select when "autoWidth" is "true"
+            if (this.options.dynamicWidth || this.options.autoWidth || this.options.ddFullWidth) {
+                this.$wrapper.width('');
+
+                this.$dropdown.show().width(9999);
+                this.$listInner.css('float', 'left');
+                this.$list.css('float', 'left');
+                maxWidthOuter = this.$list.outerWidth(true) + (this.options.extraWidth || 0);
+                scrollbarWidth = this.$listInner.width() - this.$listInnerUl.width();
+                this.$list.css('float', '');
+                this.$listInner.css('float', '');
+                this.$dropdown.css('width', '100%');
+
+                if (this.options.ddFullWidth) {
+                    this.$dropdown.width(maxWidthOuter + scrollbarWidth);
+                }
+
+                if (this.options.dynamicWidth) {
+                    this.$wrapper.css({
+                        display: 'inline-block',
+                        width: 'auto',
+                        verticalAlign: 'top'
+                    });
+                } else if (this.options.autoWidth) {
+                    this.$wrapper.width(maxWidthOuter + (this.options.equalWidths ? scrollbarWidth : 0)).addClass('ik_select_autowidth');
+                }
+
+                wrapperParentWidth = this.$wrapper.parent().width();
+                if (this.$wrapper.width() > wrapperParentWidth) {
+                    this.$wrapper.width(wrapperParentWidth);
+                }
+            }
+
+            if (this.options.filter) {
+                this.$filter.show().outerWidth(this.$filterWrap.width());
+            }
+
+            this.$dropdown.hide();
+
+            // hide the original select
+            this.$el.css({
+                position: 'absolute',
+                margin: 0,
+                padding: 0,
+                top: 0,
+                left: -9999
+            });
+
+            // show the original select in mobile browsers
+            if ($.browser.mobile) {
+                this.$el.css({
+                    opacity: 0,
+                    left: 0,
+                    height: this.$wrapper.height(),
+                    width: this.$wrapper.width()
+                });
+            }
+        },
+
+        // creates or recreates dropdown and sets selected options's text into fake select
+        reset: function () {
+            var html = '';
+
+            // init fake select's text
+            this.$linkText.html(this.$el.val());
+
+            this.$listInner.empty();
+
+            // creating an ul>li list identical to the original dropdown
+            html = '<ul>';
+            this.$el.children().each($.proxy(function (childIndex, child) {
+                var $child = $(child);
+                var tagName = child.tagName.toLowerCase();
+                var options;
+                if (tagName === 'optgroup') {
+                    options = $child.children().map($.proxy(function (optionIndex, option) {
+                        return this._generateOptionObject($(option));
+                    }, this));
+                    options = $.makeArray(options);
+                    html += this._renderListOptgroup({
+                        label: $child.attr('label') || '&nbsp;',
+                        isDisabled: $child.is(':disabled'),
+                        options: options
+                    });
+                } else if (tagName === 'option') {
+                    html += this._renderListOption(this._generateOptionObject($child));
+                }
+            }, this));
+            html += '</ul>';
+            this.$listInner.append(html);
+            this._syncOriginalOption();
+
+            this.$listInnerUl = $('> ul', this.$listInner);
+            this.$optgroupSet = $('.ik_select_optgroup', this.$listInner);
+            this.$optionSet = $('.ik_select_option', this.$listInner);
+        },
+
+        // hides dropdown
+        hideDropdown: function () {
+            if (this.options.filter) {
+                this.$filter.val('');
+                this._filterKeyup();
+            }
+
+            this.$dropdown.hide().appendTo(this.$wrapper).css({
+                left: '',
+                top: ''
+            });
+
+            if (this.options.extractLink) {
+                this.$wrapper.outerWidth(this.$wrapper.data('outerWidth'));
+                this.$wrapper.height('');
+                this.$link.removeClass('ik_select_link_extracted').css({
+                    position: '',
+                    top: '',
+                    left: '',
+                    zIndex: ''
+                }).prependTo(this.$wrapper);
+            }
+
+            instOpened = null;
+            this.$el.focus();
+
+            this.options.onHide(this);
+            this.$el.trigger('ikhide', this);
+        },
+
+        // shows dropdown
+        showDropdown: function () {
+            var dropdownOffset, dropdownOuterWidth, dropdownOuterHeight;
+            var wrapperOffset, wrapperOuterWidth;
+            var windowWidth, windowHeight, windowScroll;
+            var linkOffset;
+
+            if (instOpened === this || !this.$optionSet.length) {
+                return;
+            } else if (instOpened) {
+                instOpened.hideDropdown();
+            }
+
+            this._syncOriginalOption();
+            this.$dropdown.show();
+
+            dropdownOffset = this.$dropdown.offset();
+            dropdownOuterWidth = this.$dropdown.outerWidth(true);
+            dropdownOuterHeight = this.$dropdown.outerHeight(true);
+            wrapperOffset = this.$wrapper.offset();
+            windowWidth = $window.width();
+            windowHeight = $window.height();
+            windowScroll = $window.scrollTop();
+
+            // if the dropdown's right border is beyond window's edge then move the dropdown to the left so that it fits
+            if (this.options.ddFullWidth && wrapperOffset.left + dropdownOuterWidth > windowWidth) {
+                dropdownOffset.left = windowWidth - dropdownOuterWidth;
+            }
+
+            // if the dropdown's bottom border is beyond window's edge then move the dropdown to the top so that it fits
+            if (dropdownOffset.top + dropdownOuterHeight > windowScroll + windowHeight) {
+                dropdownOffset.top = windowScroll + windowHeight - dropdownOuterHeight;
+            }
+
+            this.$dropdown.css({
+                left: dropdownOffset.left,
+                top: dropdownOffset.top,
+                width: this.$dropdown.width()
+            }).appendTo('body');
+
+            if (this.options.extractLink) {
+                linkOffset = this.$link.offset();
+                wrapperOuterWidth = this.$wrapper.outerWidth();
+                this.$wrapper.data('outerWidth', wrapperOuterWidth);
+                this.$wrapper.outerWidth(wrapperOuterWidth);
+                this.$wrapper.outerHeight(this.$wrapper.outerHeight());
+                this.$link.outerWidth(this.$link.outerWidth());
+                this.$link.addClass('ik_select_link_extracted').css({
+                    position: 'absolute',
+                    top: linkOffset.top,
+                    left: linkOffset.left,
+                    zIndex: 9999
+                }).appendTo('body');
+            }
+
+            this.$listInner.scrollTop(this.$active.position().top - this.$list.height() / 2);
+
+            if (this.options.filter) {
+                this.$filter.focus();
+            } else {
+                this.$el.focus();
+            }
+
+            instOpened = this;
+
+            this.options.onShow(this);
+            this.$el.trigger('ikshow', this);
+        },
+
+        _generateOptionObject: function ($option) {
+            return {
+                value: $option.val(),
+                label: $option.html() || '&nbsp;',
+                isDisabled: $option.is(':disabled')
+            };
+        },
+
+        // generates option code for the fake dropdown
+        _renderListOption: function (option) {
+            var html;
+            var disabledClass = option.isDisabled ? ' ik_select_option_disabled' : '';
+            html = '<li class="ik_select_option' + disabledClass + '" data-value="' + option.value + '">';
+            html += '<span class="ik_select_option_label">';
+            html += option.label;
+            html += '</span>';
+            html += '</li>';
+            return html;
+        },
+
+        // generates optgroup code for the fake dropdown
+        _renderListOptgroup: function (optgroup) {
+            var html;
+            var disabledClass = optgroup.isDisabled ? ' ik_select_optgroup_disabled' : '';
+            html = '<li class="ik_select_optgroup' + disabledClass + '">';
+            html += '<div class="ik_select_optgroup_label">' + optgroup.label + '</div>';
+            html += '<ul>';
+            if ($.isArray(optgroup.options)) {
+                $.each(optgroup.options, $.proxy(function (optionIndex, option) {
+                    html += this._renderListOption({
+                        value: option.value,
+                        label: option.label || '&nbsp;',
+                        isDisabled: option.isDisabled
+                    });
+                }, this));
+            }
+            html += '</ul>';
+            html += '</li>';
+            return html;
+        },
+
+        // generates option code for the select
+        _renderOption: function (option) {
+            return '<option value="' + option.value + '">' + option.label + '</option>';
+        },
+
+        // generates optgroup code for the select
+        _renderOptgroup: function (optgroup) {
+            var html;
+            html = '<optgroup label="' + optgroup.label + '">';
+            if ($.isArray(optgroup.options)) {
+                $.each(optgroup.options, $.proxy(function (optionIndex, option) {
+                    html += this._renderOption(option);
+                }, this));
+            }
+            html += '</option>';
+            return html;
+        },
+
+        addOptions: function (options, optionIndex, optgroupIndex) {
+            var listHtml = '', selectHtml = '';
+            var $destinationUl = this.$listInnerUl;
+            var $destinationOptgroup = this.$el;
+            var $ulOptions, $optgroupOptions;
+
+            options = $.isArray(options) ? options : [options];
+
+            $.each(options, $.proxy(function (index, option) {
+                listHtml += this._renderListOption(option);
+                selectHtml += this._renderOption(option);
+            }, this));
+
+            if ($.isNumeric(optgroupIndex) && optgroupIndex < this.$optgroupSet.length) {
+                $destinationUl = this.$optgroupSet.eq(optgroupIndex);
+                $destinationOptgroup = $('optgroup', this.$el).eq(optgroupIndex);
+            }
+            if ($.isNumeric(optionIndex)) {
+                $ulOptions = $('.ik_select_option', $destinationUl);
+                if (optionIndex < $ulOptions.length) {
+                    $ulOptions.eq(optionIndex).before(listHtml);
+                    $optgroupOptions = $('option', $destinationOptgroup);
+                    $optgroupOptions.eq(optionIndex).before(selectHtml);
+                }
+            }
+            if (!$optgroupOptions) {
+                $destinationUl.append(listHtml);
+                $destinationOptgroup.append(selectHtml);
+            }
+
+            this.$optionSet = $('.ik_select_option', this.$listInner);
+            this._fixHeight();
+        },
+
+        addOptgroups: function (optgroups, optgroupIndex) {
+            var listHtml = '', selectHtml = '';
+            if (!optgroups) {
+                return;
+            }
+            optgroups = $.isArray(optgroups) ? optgroups : [optgroups];
+
+            $.each(optgroups, $.proxy(function (optgroupIndex, optgroup) {
+                listHtml += this._renderListOptgroup(optgroup);
+                selectHtml += this._renderOptgroup(optgroup);
+            }, this));
+
+            if ($.isNumeric(optgroupIndex) && optgroupIndex < this.$optgroupSet.length) {
+                this.$optgroupSet.eq(optgroupIndex).before(listHtml);
+                $('optgroup', this.$el).eq(optgroupIndex).before(selectHtml);
+            } else {
+                this.$listInnerUl.append(listHtml);
+                this.$el.append(selectHtml);
+            }
+
+            this.$optgroupSet = $('.ik_select_optgroup', this.$listInner);
+            this.$optionSet = $('.ik_select_option', this.$listInner);
+            this._fixHeight();
+        },
+
+        removeOptions: function (optionIndexes, optgroupIndex) {
+            var $removeList = $([]);
+            var $listContext;
+            var $selectContext;
+
+            if ($.isNumeric(optgroupIndex)) {
+                if (optgroupIndex < 0) {
+                    $listContext = $('> .ik_select_option', this.$listInnerUl);
+                    $selectContext = $('> option', this.$el);
+                } else if (optgroupIndex < this.$optgroupSet.length) {
+                    $listContext = $('.ik_select_option', this.$optgroupSet.eq(optgroupIndex));
+                    $selectContext = $('optgroup', this.$el).eq(optgroupIndex).find('option');
+                }
+            }
+            if (!$listContext) {
+                $listContext = this.$optionSet;
+                $selectContext = $(this.el.options);
+            }
+
+            if (!$.isArray(optionIndexes)) {
+                optionIndexes = [optionIndexes];
+            }
+
+            $.each(optionIndexes, $.proxy(function (index, optionIndex) {
+                if (optionIndex < $listContext.length) {
+                    $removeList = $removeList.add($listContext.eq(optionIndex)).add($selectContext.eq(optionIndex));
+                }
+            }, this));
+
+            $removeList.remove();
+            this.$optionSet = $('.ik_select_option', this.$listInner);
+            this._syncOriginalOption();
+            this._fixHeight();
+        },
+
+        removeOptgroups: function (optgroupIndexes) {
+            var $removeList = $([]);
+            var $selectOptgroupSet = $('optgroup', this.el);
+
+            if (!$.isArray(optgroupIndexes)) {
+                optgroupIndexes = [optgroupIndexes];
+            }
+
+            $.each(optgroupIndexes, $.proxy(function (index, optgroupIndex) {
+                if (optgroupIndex < this.$optgroupSet.length) {
+                    $removeList = $removeList.add(this.$optgroupSet.eq(optgroupIndex)).add($selectOptgroupSet.eq(optgroupIndex));
+                }
+            }, this));
+
+            $removeList.remove();
+            this.$optionSet = $('.ik_select_option', this.$listInner);
+            this.$optgroupSet = $('.ik_select_optgroup', this.$listInner);
+            this._syncOriginalOption();
+            this._fixHeight();
+        },
+
+        // disable select
+        disable: function () {
+            this.toggle(false);
+        },
+
+        // enable select
+        enable: function () {
+            this.toggle(true);
+        },
+
+        // toggle select
+        toggle: function (bool) {
+            this.isDisabled = typeof bool !== 'undefined' ? !bool : !this.isDisabled;
+            this.$el.prop('disabled', this.isDisabled);
+            this.$link.toggleClass('ik_select_link_disabled', this.isDisabled);
+        },
+
+        // make option selected by value
+        select: function (value, isIndex) {
+            if (!isIndex) {
+                this.$el.val(value);
+            } else {
+                this.el.selectedIndex = value;
+            }
+            this._syncOriginalOption();
+        },
+
+        disableOptgroups: function (optgroupIndexes) {
+            this.toggleOptgroups(optgroupIndexes, false);
+        },
+
+        enableOptgroups: function (optgroupIndexes) {
+            this.toggleOptgroups(optgroupIndexes, true);
+        },
+
+        toggleOptgroups: function (optgroupIndexes, bool) {
+            if (!$.isArray(optgroupIndexes)) {
+                optgroupIndexes = [optgroupIndexes];
+            }
+
+            $.each(optgroupIndexes, $.proxy(function (index, optgroupIndex) {
+                var isDisabled;
+                var $optionSet, indexes = [], indexFirst;
+                var $optgroup = $('optgroup', this.$el).eq(optgroupIndex);
+                isDisabled = typeof bool !== 'undefined' ? bool : $optgroup.prop('disabled');
+                $optgroup.prop('disabled', !isDisabled);
+                this.$optgroupSet.eq(optgroupIndex).toggleClass('ik_select_optgroup_disabled', !isDisabled);
+
+                $optionSet = $('option', $optgroup);
+                indexFirst = $(this.el.options).index($optionSet.eq(0));
+                for (var i = indexFirst; i < indexFirst + $optionSet.length; i++) {
+                    indexes.push(i);
+                }
+                this.toggleOptions(indexes, true, isDisabled);
+            }, this));
+
+            this._syncOriginalOption();
+        },
+
+        disableOptions: function (lookupValues, isIndex) {
+            this.toggleOptions(lookupValues, isIndex, false);
+        },
+
+        enableOptions: function (lookupValues, isIndex) {
+            this.toggleOptions(lookupValues, isIndex, true);
+        },
+
+        toggleOptions: function (lookupValues, isIndex, bool) {
+            var $selectOptionSet = $('option', this.el);
+            if (!$.isArray(lookupValues)) {
+                lookupValues = [lookupValues];
+            }
+
+            var toggleOption = $.proxy(function ($option, optionIndex) {
+                var isDisabled = typeof bool !== 'undefined' ? bool : $option.prop('disabled');
+                $option.prop('disabled', !isDisabled);
+                this.$optionSet.eq(optionIndex).toggleClass('ik_select_option_disabled', !isDisabled);
+            }, this);
+
+            $.each(lookupValues, function (index, lookupValue) {
+                if (!isIndex) {
+                    $selectOptionSet.each(function (optionIndex, option) {
+                        var $option = $(option);
+                        if ($option.val() === lookupValue) {
+                            toggleOption($option, optionIndex);
+                            return this;
+                        }
+                    });
+                } else {
+                    toggleOption($selectOptionSet.eq(lookupValue), lookupValue);
+                }
+            });
+
+            this._syncOriginalOption();
+        },
+
+        // detach plugin from the orignal select
+        detach: function () {
+            this.$el.off('.ikSelect').css({
+                width: '',
+                height: '',
+                left: '',
+                top: '',
+                position: '',
+                margin: '',
+                padding: ''
+            });
+
+            this.$wrapper.before(this.$el);
+            this.$wrapper.remove();
+            this.$el.removeData('plugin_ikSelect');
+        }
+    });
+
+    $.fn.ikSelect = function (options) {
+        var args;
+        //do nothing if opera mini
+        if ($.browser.operamini) {
+            return this;
+        }
+
+        args = Array.prototype.slice.call(arguments, 1);
+
+        return this.each(function () {
+            var plugin;
+            if (!$.data(this, 'plugin_ikSelect')) {
+                $.data(this, 'plugin_ikSelect', new IkSelect(this, options));
+            } else if (typeof options === 'string') {
+                plugin = $.data(this, 'plugin_ikSelect');
+                if (typeof plugin[options] === 'function') {
+                    plugin[options].apply(plugin, args);
+                }
+            }
+        });
+    };
+
+    $.ikSelect = {
+        extendDefaults: function (options) {
+            $.extend(defaults, options);
+        }
+    };
+
+    $(document).bind('click.ikSelect', function () {
+        if (instOpened) {
+            instOpened.hideDropdown();
+        }
+    });
+}));

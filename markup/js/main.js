@@ -229,13 +229,55 @@ $(function () {
             return li.appendTo(ul);
         }
     });
-    $(".curselect").curselect({
+    $(".curselect_cs").curselect({
         change: function (event, ui) {
             console.log('SELECT CHANGED ' + ui.item.value);
             $(ui.item.element.context.parentElement).change().addClass('changed');
             //.change();
         }
     }).curselect('widget').addClass('cs_select_short_btn');
+    
+
+    //$(function () {
+        $('.curselect').wrap('<div class="select_place">').ikSelect({
+        syntax: '<div class="ik_select_link"><div class="ik_select_link_inner"><span class="ik_select_link_text"></span></div></div><div class="ik_select_dropdown"><div class="ik_select_list"></div></div>',
+        customClass: 'intro-select2',
+        extractLink: true,
+        ddMaxHeight: 1000,
+        equalWidths: true,
+        //autoWidth: false,
+        onShow: function (inst) {
+            console.log(inst);
+            if($(inst.el).parents('.filter_small').length){
+               $(inst.$dropdown).addClass('opts_small');
+               //.addClass('opt_small')
+            }
+            // ik_select_link_inner
+            // $linkText
+
+            inst.$dropdown.css({
+                top: inst.$link.offset().top - inst.$hover.position().top,
+                "width": inst.$link.width()
+            });
+            setTimeout(function () {
+                inst.$link.add(inst.$dropdown).addClass('transition');
+                inst.$link.add(inst.$dropdown).addClass('animate');
+            }, 0);
+        },
+        onHide: function (inst) {
+            inst.$link.add(inst.$dropdown).removeClass('animate');
+            inst.$link.add(inst.$dropdown).removeClass('transition');
+        },
+        onKeyDown: function (inst, keycode) {
+            // if (keycode === 40 || keycode === 38) {
+            //     inst.$dropdown.css({
+            //         top: inst.$link.offset().top - inst.$hover.position().top
+            //     });
+            //     inst._makeOptionActive(inst.hoverIndex, true);
+            // }
+        }
+    });
+    //});
 
     //$(".sel_placeholder").curselect('widget').addClass('placeholdered');
 
